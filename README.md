@@ -44,7 +44,7 @@ client._get(
   },
   function(err) {
     if (err) throw err;
-  },
+  }
 );
 ```
 
