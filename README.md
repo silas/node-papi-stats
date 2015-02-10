@@ -13,10 +13,10 @@ Add basic stats support to [Papi][papi] clients.
 ## Example
 
 ``` javascript
-var Lynx = require('lynx');
+var lynx = require('lynx');
 var papi = require('papi');
 
-var metrics = new Lynx('127.0.0.1', 8125, { scope: 'prefix' });
+var metrics = lynx('127.0.0.1', 8125, { scope: 'prefix' });
 
 var client = new papi.Client({
   name: 'github',
