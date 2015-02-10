@@ -9,7 +9,6 @@ Add basic stats support to [Papi][papi] clients.
 
  * count (Function&lt;String, Number&gt;): a function that increments a counter by a given amount
  * timing (Function&lt;String, Number&gt;): a function that records timing data in milliseconds
- * group (Boolean, default: false): group response status codes into hundreds (ex: `2xx`).
 
 ## Example
 
@@ -52,11 +51,7 @@ client._get(
 This could produce metrics like the following:
 
 ```
-// group: false
-prefix.github.gists.200:773|ms
-prefix.github.gists.403:421|ms
-
-// group: true
+// responses
 prefix.github.gists.2xx:773|ms
 prefix.github.gists.4xx:421|ms
 

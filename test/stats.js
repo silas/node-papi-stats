@@ -196,30 +196,6 @@ describe('papi-stats', function() {
       });
     });
 
-    it('should track grouped responses', function(done) {
-      var self = this;
-
-      var client = self.client(null, {
-        group: true,
-        count: self.count,
-        timing: self.timing,
-      });
-
-      self.nock.get('/test').reply(201);
-
-      client.test(function(err) {
-        should.not.exist(err);
-
-        should(self.stats).be.length(1);
-
-        self.stats[0].name.should.equal('example_org.test.2xx');
-        self.stats[0].value.should.be.a.Number;
-        self.stats[0].type.should.equal('timing');
-
-        done();
-      });
-    });
-
     it('should track error responses', function(done) {
       var self = this;
 
