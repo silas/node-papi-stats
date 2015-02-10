@@ -29,6 +29,7 @@ describe('papi-stats', function() {
     var self = this;
 
     self.baseUrl = 'http://example.org';
+    self.cache = {};
     self.stats = [];
 
     self.count = function(name, value) {
@@ -98,7 +99,11 @@ describe('papi-stats', function() {
 
     self.client = function(opts, options) {
       opts = opts || {};
-      options = options || { count: self.count, timing: self.timing };
+      options = options || {
+        cache: self.cache,
+        count: self.count,
+        timing: self.timing,
+      };
 
       var client = new Example(opts);
       client._plugin(stats, options);
@@ -323,6 +328,25 @@ describe('papi-stats', function() {
         should.not.exist(err);
 
         should(self.stats).be.length(0);
+
+        done();
+      });
+    });
+
+    it('should use cache', function(done) {
+      var self = this;
+
+      var client = self.client();
+      self.cache.test = 'foo';
+
+      self.nock.get('/test').reply(200);
+
+      client.test(function(err) {
+        should.not.exist(err);
+
+        should(self.stats).be.length(1);
+
+        self.stats[0].name.should.equal('example_org.foo.200');
 
         done();
       });

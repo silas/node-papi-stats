@@ -1,6 +1,6 @@
 {
   "name": "papi-stats",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Stats plugin for Papi",
   "main": "lib",
   "devDependencies": {
