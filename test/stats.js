@@ -5,6 +5,7 @@
  */
 
 var debug = require('debug')('papi');
+var events = require('events');
 var nock = require('nock');
 var papi = require('papi');
 var should = require('should');
@@ -88,9 +89,9 @@ describe('papi-stats', function() {
         path: '/hello',
       };
 
-      this._get(opts, function(ctx, next) {
-        if (ctx.res && ctx.res.statusCode === 500) {
-          ctx.retry();
+      this._get(opts, function(request, next) {
+        if (request.res && request.res.statusCode === 500) {
+          request.retry();
         } else {
           next();
         }
@@ -219,6 +220,34 @@ describe('papi-stats', function() {
 
         done();
       });
+    });
+
+    it('should track aborts', function(done) {
+      var self = this;
+
+      var client = self.client();
+
+      var opts = {
+        name: 'abort',
+        path: '/abort',
+        ctx: new events.EventEmitter(),
+      };
+
+      self.nock.get(opts.path).delayConnection(100).reply(200);
+
+      client._get(opts, function(err) {
+        should.exist(err);
+
+        should(self.stats).be.length(1);
+
+        self.stats[0].name.should.equal('example_org.abort.abort');
+        self.stats[0].value.should.be.above(0);
+        self.stats[0].type.should.equal('timing');
+
+        done();
+      });
+
+      opts.ctx.emit('done');
     });
 
     it('should track timeouts', function(done) {

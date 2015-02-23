@@ -52,12 +52,13 @@ This could produce metrics like the following:
 
 ```
 // responses
-prefix.github.gists.2xx:773|ms
-prefix.github.gists.4xx:421|ms
+prefix.github.gists.200:773|ms
+prefix.github.gists.401:421|ms
 
 // non-responses
-prefix.github.gists.error:3|ms
+prefix.github.gists.abort:5003|ms
 prefix.github.gists.timeout:10001|ms
+prefix.github.gists.error:3|ms
 
 // ctx.retry called in middleware
 prefix.github.gists.retry:1|c
